@@ -1,0 +1,11 @@
+/target
+/*.properties
+
+/.settings
+/.metadata
+/.project
+/.classpath
+
+/nb*.xml
+
+/.directory
