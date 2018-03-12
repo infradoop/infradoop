@@ -1,0 +1,2 @@
+infradoop.core.common.source.Cdh5HbaseSecureProviderFactory
+infradoop.core.common.source.Cdh5HiveSecureProviderFactory
