@@ -378,7 +378,9 @@ public class Cdh5SolrConnector extends SolrConnector {
 	
 	@Override
 	public EntityWriter getEntityWriter(EntityDescriptor entityDesc, EntityWriterOptions options) throws IOException {
-		return new Cdh5SolrEntityWriter(this, entityDesc, options);
+		EntityWriter entityWriter = new Cdh5SolrEntityWriter(this, entityDesc, options);
+		entityWriter.initialize();
+		return entityWriter;
 	}
 	
 	private static class CircularList<E> extends ArrayList<E> {

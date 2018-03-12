@@ -108,6 +108,8 @@ public class Cdh5HbaseConnector extends HbaseConnector {
 	
 	@Override
 	public EntityWriter getEntityWriter(EntityDescriptor entityDesc, EntityWriterOptions options) throws IOException {
-		return new Cdh5HbaseEntityWriter(this, entityDesc, options);
+		EntityWriter entityWriter = new Cdh5HbaseEntityWriter(this, entityDesc, options);
+		entityWriter.initialize();
+		return entityWriter;
 	}
 }
