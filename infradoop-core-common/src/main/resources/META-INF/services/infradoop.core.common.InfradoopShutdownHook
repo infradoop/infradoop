@@ -1,0 +1,2 @@
+infradoop.core.common.account.AccountShutdownHook
+infradoop.core.common.source.ConnectorShutdownHook
