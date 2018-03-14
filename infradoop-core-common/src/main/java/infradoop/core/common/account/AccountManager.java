@@ -24,7 +24,32 @@ public class AccountManager {
 			unregister(name);
 	}
 	
+	public static boolean unregister(Account account) {
+		if (account == null)
+			throw new IllegalArgumentException("account parameter can't be null");
+		String name = null;
+		for (Map.Entry<String, Account> entry: ACCOUNTS.entrySet())
+			if (account.equals(entry.getValue())) {
+				name = entry.getKey();
+				break;
+			}
+		if (name != null) {
+			ACCOUNTS.remove(name);
+			try {
+				account.close();
+				LOG.debug("account closed ["+name+", "+account.getName()+"]");
+				return true;
+			} catch (IOException e) {
+				LOG.warn("unable to close account ["+name+", "+account.getName()+"]", e);
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 	public static boolean unregister(String name) {
+		if (name == null || "".equals(name))
+			throw new IllegalArgumentException("account parameter can't be empty");
 		if (!ACCOUNTS.containsKey(name))
 			return false;
 		Account account = ACCOUNTS.remove(name);
@@ -39,6 +64,8 @@ public class AccountManager {
 	}
 	
 	public static Account register(String name, Properties properties) throws IOException {
+		if (name == null || "".equals(name))
+			throw new IllegalArgumentException("account parameter can't be empty");
 		if (ACCOUNTS.containsKey(name))
 			throw new IOException("account is already registered ["+name+"]");
 		DefaultAccount account = new DefaultAccount(name, properties, null,
@@ -52,6 +79,8 @@ public class AccountManager {
 		return register(name, SystemConfiguration.getConfiguration());
 	}
 	public static Account register(String name, Configuration configuration) throws IOException {
+		if (name == null || "".equals(name))
+			throw new IllegalArgumentException("account parameter can't be empty");
 		if (ACCOUNTS.containsKey(name))
 			throw new IOException("account is already registered ["+name+"]");
 		UserGroupInformation ugi = SystemConfiguration.getLoginUser();
@@ -82,10 +111,12 @@ public class AccountManager {
 		return register(name, principal, password, null, configuration);
 	}
 	public static Account register(String name, String principal, String password, File keytab, Configuration configuration) throws IOException {
+		if (name == null || "".equals(name))
+			throw new IllegalArgumentException("account parameter can't be empty");
 		if (ACCOUNTS.containsKey(name))
 			throw new IOException("account is already registered ["+name+"]");
 		DefaultAccount account;
-		if (SystemConfiguration.isSecurityEnabled()) {
+		if (SystemConfiguration.isSecurityEnabled() && (password != null || keytab != null)) {
 			KerberosAuthenticator kauth = new KerberosAuthenticator(principal, password, keytab);
 			account = new DefaultAccount(principal, new Properties(), kauth,
 				null, configuration);
