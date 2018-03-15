@@ -3,18 +3,27 @@ package infradoop.core.common.source;
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.util.NamedList;
 
 import infradoop.core.common.account.Account;
 
 public class Cdh5KerberosHttpSolrServer extends HttpSolrServer {
+	public static HttpClient createKerberosHttpClient() {
+		DefaultHttpClient httpClient = (DefaultHttpClient)HttpClientUtil.createClient(null);
+		Cdh5HttpClientConnectorFactory.configureForKerberos(httpClient);
+		return httpClient;
+	}
+	
 	private final Account account;
 
 	public Cdh5KerberosHttpSolrServer(Account account, String host) {
-		super(host, Cdh5KerberosCloudSolrServer.createKerberosHttpClient());
+		super(host, createKerberosHttpClient());
 		this.account = account;
 	}
 

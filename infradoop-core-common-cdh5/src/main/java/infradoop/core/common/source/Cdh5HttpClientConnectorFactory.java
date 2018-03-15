@@ -14,6 +14,7 @@ import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.params.AuthPolicy;
 import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.auth.BasicSchemeFactory;
 import org.apache.http.impl.auth.SPNegoSchemeFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.SystemDefaultHttpClient;
@@ -45,9 +46,9 @@ public class Cdh5HttpClientConnectorFactory implements ConnectorFactory {
 		httpClient.getCredentialsProvider().setCredentials(AuthScope.ANY, use_jaas_creds);
 		httpClient.addRequestInterceptor(BUFFERED_INTERCEPTOR);
 	}
-	private static void configureForBasic(DefaultHttpClient httpClient, String user, String password) {
+	public static void configureForBasic(DefaultHttpClient httpClient, String user, String password) {
 		AuthSchemeRegistry registry = new AuthSchemeRegistry();
-		registry.register(AuthPolicy.BASIC, new SPNegoSchemeFactory(true));
+		registry.register(AuthPolicy.BASIC, new BasicSchemeFactory());
 		httpClient.setAuthSchemes(registry);
 		if (user != null) {
 			Credentials basicCreds = new UsernamePasswordCredentials(user, password);
