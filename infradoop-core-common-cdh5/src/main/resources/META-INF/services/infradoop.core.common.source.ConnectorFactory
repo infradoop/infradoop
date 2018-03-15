@@ -2,3 +2,4 @@ infradoop.core.common.source.Cdh5HdfsConnectorFactory
 infradoop.core.common.source.Cdh5HiveConnectorFactory
 infradoop.core.common.source.Cdh5HbaseConnectorFactory
 infradoop.core.common.source.Cdh5SolrConnectorFactory
+infradoop.core.common.source.Cdh5HttpClientConnectorFactory
