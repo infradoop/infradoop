@@ -17,8 +17,6 @@ import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.auth.BasicSchemeFactory;
-import org.apache.http.impl.auth.KerberosSchemeFactory;
-import org.apache.http.impl.auth.NTLMSchemeFactory;
 import org.apache.http.impl.auth.SPNegoSchemeFactory;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
