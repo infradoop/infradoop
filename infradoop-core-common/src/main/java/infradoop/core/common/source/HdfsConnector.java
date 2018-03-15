@@ -1,9 +1,9 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+
 import org.apache.commons.pool.KeyedObjectPool;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -13,6 +13,8 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.FsPermission;
 import org.apache.hadoop.util.Progressable;
 import org.apache.log4j.Logger;
+
+import infradoop.core.common.account.Account;
 
 public abstract class HdfsConnector extends FileSystem implements Connector {
 	private static final Logger LOG = Logger.getLogger(HdfsConnector.class);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringEscapeUtils;
 
 public class EntityDescriptor extends EntityNameable {

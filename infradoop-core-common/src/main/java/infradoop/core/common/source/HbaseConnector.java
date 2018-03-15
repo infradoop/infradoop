@@ -1,8 +1,8 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
@@ -11,6 +11,8 @@ import org.apache.hadoop.hbase.client.BufferedMutatorParams;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.RegionLocator;
 import org.apache.hadoop.hbase.client.Table;
+
+import infradoop.core.common.account.Account;
 
 public abstract class HbaseConnector extends AbstractConnectorEntityHandler {
 	public HbaseConnector(Account account, Object connection) {

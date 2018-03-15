@@ -1,11 +1,12 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.entity.Grant;
-import infradoop.core.common.entity.Nameable;
+import java.io.IOException;
+
 import infradoop.core.common.entity.EntityDescriptor;
 import infradoop.core.common.entity.EntityWriter;
 import infradoop.core.common.entity.EntityWriterOptions;
-import java.io.IOException;
+import infradoop.core.common.entity.Grant;
+import infradoop.core.common.entity.Nameable;
 
 public interface ConnectorEntityHandler extends Connector {
 	public String[] getDomains() throws IOException;

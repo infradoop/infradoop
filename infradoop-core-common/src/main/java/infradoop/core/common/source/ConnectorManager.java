@@ -1,16 +1,18 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+
 import org.apache.commons.pool.BaseKeyedPoolableObjectFactory;
 import org.apache.commons.pool.KeyedObjectPool;
 import org.apache.commons.pool.impl.GenericKeyedObjectPool;
 import org.apache.log4j.Logger;
+
+import infradoop.core.common.account.Account;
 
 public class ConnectorManager {
 	private static final Logger LOG = Logger.getLogger(ConnectorManager.class);

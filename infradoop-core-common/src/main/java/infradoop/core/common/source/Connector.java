@@ -1,7 +1,8 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import org.apache.commons.pool.KeyedObjectPool;
+
+import infradoop.core.common.account.Account;
 
 public interface Connector extends AutoCloseable {
 	public String getConnectorType();

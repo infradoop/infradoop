@@ -1,8 +1,9 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import infradoop.core.common.account.Account;
 
 public abstract class HiveConnector extends AbstractConnectorEntityHandler implements Connection {
 	public HiveConnector(Account account, Object connection) {

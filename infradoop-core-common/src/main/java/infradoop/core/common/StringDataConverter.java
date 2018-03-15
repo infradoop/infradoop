@@ -1,10 +1,12 @@
 package infradoop.core.common;
 
-import infradoop.core.common.entity.Attribute;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Date;
+
 import org.apache.commons.codec.binary.Hex;
+
+import infradoop.core.common.entity.Attribute;
 
 public class StringDataConverter {
 	private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();

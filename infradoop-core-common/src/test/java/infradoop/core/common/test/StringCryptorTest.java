@@ -1,8 +1,9 @@
 package infradoop.core.common.test;
 
-import infradoop.core.common.StringCryptor;
 import org.junit.Assert;
 import org.junit.Test;
+
+import infradoop.core.common.StringCryptor;
 
 public class StringCryptorTest {
 	@Test

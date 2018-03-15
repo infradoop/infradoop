@@ -1,8 +1,8 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -11,6 +11,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.protocol.HttpContext;
+
+import infradoop.core.common.account.Account;
 
 public class HttpClientConnector extends AbstractConnector {
 	public HttpClientConnector(Account account, Object connection) {

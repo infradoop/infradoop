@@ -1,13 +1,15 @@
 package infradoop.core.common.test;
 
-import infradoop.core.common.account.Account;
-import infradoop.core.common.account.AccountManager;
 import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import infradoop.core.common.account.Account;
+import infradoop.core.common.account.AccountManager;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AccountTest {

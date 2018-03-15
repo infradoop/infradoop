@@ -1,11 +1,12 @@
 package infradoop.core.common.test;
 
-import infradoop.core.common.entity.DataType;
-import infradoop.core.common.entity.EntityDescriptor;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import infradoop.core.common.entity.DataType;
+import infradoop.core.common.entity.EntityDescriptor;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EntityDescriptorTest {

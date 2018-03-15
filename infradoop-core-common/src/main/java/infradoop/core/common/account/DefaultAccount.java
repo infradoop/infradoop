@@ -1,11 +1,13 @@
 package infradoop.core.common.account;
 
-import infradoop.core.common.KerberosAuthenticator;
-import infradoop.core.common.SystemConfiguration;
 import java.io.IOException;
 import java.util.Properties;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
+
+import infradoop.core.common.KerberosAuthenticator;
+import infradoop.core.common.SystemConfiguration;
 
 public class DefaultAccount implements Account {
 	private final String name;

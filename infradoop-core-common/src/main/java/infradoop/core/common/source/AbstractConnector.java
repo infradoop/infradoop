@@ -1,8 +1,9 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import org.apache.commons.pool.KeyedObjectPool;
 import org.apache.log4j.Logger;
+
+import infradoop.core.common.account.Account;
 
 public abstract class AbstractConnector implements Connector {
 	private static final Logger LOG = Logger.getLogger(HdfsConnector.class);

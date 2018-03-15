@@ -1,7 +1,8 @@
 package infradoop.core.common.entity;
 
-import infradoop.core.common.source.Connector;
 import java.io.IOException;
+
+import infradoop.core.common.source.Connector;
 
 public abstract class EntityWriter implements AutoCloseable {
 	protected final Connector connector;

@@ -1,7 +1,8 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.entity.Grant;
 import java.io.IOException;
+
+import infradoop.core.common.entity.Grant;
 
 public interface SecurityProvider extends AutoCloseable {
 	public Grant[] retriveDomainGrants(String domain) throws IOException;

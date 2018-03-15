@@ -1,7 +1,5 @@
 package infradoop.core.common.account;
 
-import infradoop.core.common.KerberosAuthenticator;
-import infradoop.core.common.SystemConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,9 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.log4j.Logger;
+
+import infradoop.core.common.KerberosAuthenticator;
+import infradoop.core.common.SystemConfiguration;
 
 public class AccountManager {
 	public static final Logger LOG = Logger.getLogger(AccountManager.class);

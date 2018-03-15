@@ -1,9 +1,9 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.StreamingResponseCallback;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -11,6 +11,8 @@ import org.apache.solr.client.solrj.response.SolrPingResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.SolrParams;
+
+import infradoop.core.common.account.Account;
 
 public abstract class SolrConnector extends AbstractConnectorEntityHandler {
 	public SolrConnector(Account account, Object connection) {

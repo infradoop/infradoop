@@ -1,15 +1,16 @@
 package infradoop.core.common.source;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
+
 import infradoop.core.common.account.Account;
 import infradoop.core.common.entity.EntityDescriptor;
 import infradoop.core.common.entity.EntityWriter;
 import infradoop.core.common.entity.EntityWriterOptions;
 import infradoop.core.common.entity.Grant;
 import infradoop.core.common.entity.Nameable;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ServiceLoader;
 
 public abstract class AbstractConnectorEntityHandler extends AbstractConnector implements ConnectorEntityHandler {
 	private static List<SecurityProviderFactory> securityProviders;
