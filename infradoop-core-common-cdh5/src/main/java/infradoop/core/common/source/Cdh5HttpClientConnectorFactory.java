@@ -17,7 +17,6 @@ import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.auth.BasicSchemeFactory;
 import org.apache.http.impl.auth.SPNegoSchemeFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 
 import infradoop.core.common.account.Account;
@@ -63,7 +62,7 @@ public class Cdh5HttpClientConnectorFactory implements ConnectorFactory {
 
 	@Override
 	public Connector create(Account account) throws Exception {
-		DefaultHttpClient httpClient = new SystemDefaultHttpClient();
+		DefaultHttpClient httpClient = new DefaultHttpClient();
 		if (account.getUserGroupInformation().hasKerberosCredentials()) {
 			configureForKerberos(httpClient);
 		} else {
