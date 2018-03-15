@@ -1,9 +1,5 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.entity.DefaultGrant;
-import infradoop.core.common.entity.Grant;
-import infradoop.core.common.entity.GranteeType;
-import infradoop.core.common.entity.Permission;
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
@@ -13,12 +9,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.sentry.SentryUserException;
 import org.apache.sentry.provider.db.service.thrift.SentryPolicyServiceClient;
 import org.apache.sentry.provider.db.service.thrift.TSentryGroup;
 import org.apache.sentry.provider.db.service.thrift.TSentryPrivilege;
 import org.apache.sentry.provider.db.service.thrift.TSentryRole;
 import org.apache.sentry.service.thrift.SentryServiceClientFactory;
+
+import infradoop.core.common.entity.DefaultGrant;
+import infradoop.core.common.entity.Grant;
+import infradoop.core.common.entity.GranteeType;
+import infradoop.core.common.entity.Permission;
 
 public class Cdh5HiveSecureProvider implements SecurityProvider {
 	protected final Connector connector;
