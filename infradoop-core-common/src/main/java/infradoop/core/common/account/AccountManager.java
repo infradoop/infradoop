@@ -118,7 +118,7 @@ public class AccountManager {
 		if (ACCOUNTS.containsKey(name))
 			throw new IOException("account is already registered ["+name+"]");
 		DefaultAccount account;
-		if (SystemConfiguration.isSecurityEnabled() && (password != null || keytab != null)) {
+		if (SystemConfiguration.isSecurityEnabled()) {
 			KerberosAuthenticator kauth = new KerberosAuthenticator(principal, password, keytab);
 			account = new DefaultAccount(principal, new Properties(), kauth,
 				null, configuration);
