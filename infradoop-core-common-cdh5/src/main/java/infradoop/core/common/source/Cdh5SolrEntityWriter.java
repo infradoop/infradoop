@@ -1,17 +1,19 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.entity.Attribute;
-import infradoop.core.common.StringDataConverter;
-import infradoop.core.common.entity.EntityDescriptor;
-import infradoop.core.common.entity.EntityWriter;
-import infradoop.core.common.entity.EntityWriterOptions;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.hadoop.hbase.exceptions.IllegalArgumentIOException;
 import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.common.SolrInputDocument;
+
+import infradoop.core.common.StringDataConverter;
+import infradoop.core.common.entity.Attribute;
+import infradoop.core.common.entity.EntityDescriptor;
+import infradoop.core.common.entity.EntityWriter;
+import infradoop.core.common.entity.EntityWriterOptions;
 
 public class Cdh5SolrEntityWriter extends EntityWriter {
 	private List<SolrInputDocument> docs;

@@ -1,9 +1,11 @@
 package infradoop.core.common.source;
 
+import java.io.IOException;
+
+import org.apache.solr.client.solrj.impl.CloudSolrServer;
+
 import infradoop.core.common.SystemConfiguration;
 import infradoop.core.common.account.Account;
-import java.io.IOException;
-import org.apache.solr.client.solrj.impl.CloudSolrServer;
 
 public class Cdh5SolrConnectorFactory implements ConnectorFactory {
 	@Override

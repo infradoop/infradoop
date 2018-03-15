@@ -1,18 +1,20 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.entity.Attribute;
-import infradoop.core.common.StringDataConverter;
-import infradoop.core.common.entity.EntityDescriptor;
-import infradoop.core.common.entity.EntityWriter;
-import infradoop.core.common.entity.EntityWriterOptions;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
+
+import infradoop.core.common.StringDataConverter;
+import infradoop.core.common.entity.Attribute;
+import infradoop.core.common.entity.EntityDescriptor;
+import infradoop.core.common.entity.EntityWriter;
+import infradoop.core.common.entity.EntityWriterOptions;
 
 public class Cdh5HbaseEntityWriter extends EntityWriter {
 	private Table table;

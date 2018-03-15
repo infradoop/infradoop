@@ -1,9 +1,10 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.security.User;
+
+import infradoop.core.common.account.Account;
 
 public class Cdh5HbaseConnectorFactory implements ConnectorFactory {
 	@Override

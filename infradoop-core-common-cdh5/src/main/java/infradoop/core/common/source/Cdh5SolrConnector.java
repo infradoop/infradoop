@@ -1,20 +1,12 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.entity.DataType;
-import infradoop.core.common.SystemConfiguration;
-import infradoop.core.common.account.Account;
-import infradoop.core.common.entity.Attribute;
-import infradoop.core.common.entity.Nameable;
-import infradoop.core.common.entity.EntityDescriptor;
-import infradoop.core.common.entity.EntityNameable;
-import infradoop.core.common.entity.EntityWriter;
-import infradoop.core.common.entity.EntityWriterOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
@@ -39,6 +31,16 @@ import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.zookeeper.KeeperException;
+
+import infradoop.core.common.SystemConfiguration;
+import infradoop.core.common.account.Account;
+import infradoop.core.common.entity.Attribute;
+import infradoop.core.common.entity.DataType;
+import infradoop.core.common.entity.EntityDescriptor;
+import infradoop.core.common.entity.EntityNameable;
+import infradoop.core.common.entity.EntityWriter;
+import infradoop.core.common.entity.EntityWriterOptions;
+import infradoop.core.common.entity.Nameable;
 
 public class Cdh5SolrConnector extends SolrConnector {
 	private static final Logger LOG = Logger.getLogger(Cdh5SolrConnector.class);

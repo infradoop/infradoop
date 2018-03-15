@@ -1,14 +1,16 @@
 package infradoop.core.common.test;
 
+import java.io.IOException;
+
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
 import infradoop.core.common.account.Account;
 import infradoop.core.common.account.AccountManager;
 import infradoop.core.common.entity.EntityDescriptor;
 import infradoop.core.common.source.ConnectorManager;
 import infradoop.core.common.source.SolrConnector;
-import java.io.IOException;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SolrConnectorTest {

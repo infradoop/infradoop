@@ -1,8 +1,10 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.security.PrivilegedExceptionAction;
+
 import org.apache.hadoop.fs.FileSystem;
+
+import infradoop.core.common.account.Account;
 
 public class Cdh5HdfsConnectorFactory implements ConnectorFactory {
 	@Override

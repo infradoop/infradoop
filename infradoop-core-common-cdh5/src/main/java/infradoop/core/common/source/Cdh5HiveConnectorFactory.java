@@ -1,13 +1,15 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.SystemConfiguration;
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
 import java.sql.Connection;
 import java.sql.DriverManager;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hive.jdbc.HiveConnection;
+
+import infradoop.core.common.SystemConfiguration;
+import infradoop.core.common.account.Account;
 
 public class Cdh5HiveConnectorFactory implements ConnectorFactory {
 	@Override

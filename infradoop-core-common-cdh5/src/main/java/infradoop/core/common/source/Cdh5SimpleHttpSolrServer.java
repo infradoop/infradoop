@@ -1,12 +1,14 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
+
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.util.NamedList;
+
+import infradoop.core.common.account.Account;
 
 public class Cdh5SimpleHttpSolrServer extends HttpSolrServer {
 	private final Account account;

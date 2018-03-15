@@ -1,11 +1,5 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
-import infradoop.core.common.entity.Nameable;
-import infradoop.core.common.entity.EntityDescriptor;
-import infradoop.core.common.entity.EntityNameable;
-import infradoop.core.common.entity.EntityWriter;
-import infradoop.core.common.entity.EntityWriterOptions;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.Blob;
@@ -27,7 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+
 import org.apache.hive.jdbc.HiveConnection;
+
+import infradoop.core.common.account.Account;
+import infradoop.core.common.entity.EntityDescriptor;
+import infradoop.core.common.entity.EntityNameable;
+import infradoop.core.common.entity.EntityWriter;
+import infradoop.core.common.entity.EntityWriterOptions;
+import infradoop.core.common.entity.Nameable;
 
 public class Cdh5HiveConnector extends HiveConnector {
 	public Cdh5HiveConnector(Account account, HiveConnection connection) {

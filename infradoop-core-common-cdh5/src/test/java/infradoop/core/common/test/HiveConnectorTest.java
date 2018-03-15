@@ -1,14 +1,16 @@
 package infradoop.core.common.test;
 
-import infradoop.core.common.account.Account;
-import infradoop.core.common.account.AccountManager;
-import infradoop.core.common.source.ConnectorManager;
-import infradoop.core.common.source.HiveConnector;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import org.junit.Test;
+
+import infradoop.core.common.account.Account;
+import infradoop.core.common.account.AccountManager;
+import infradoop.core.common.source.ConnectorManager;
+import infradoop.core.common.source.HiveConnector;
 
 public class HiveConnectorTest {
 	@Test

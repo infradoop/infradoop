@@ -1,12 +1,14 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.util.List;
+
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.AclEntry;
 import org.apache.hadoop.fs.permission.AclStatus;
+
+import infradoop.core.common.account.Account;
 
 public class Cdh5HdfsConnector extends HdfsConnector {
 	public Cdh5HdfsConnector(Account account, FileSystem fileSystem) {

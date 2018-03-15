@@ -1,9 +1,9 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
 import java.io.IOException;
 import java.security.Principal;
 import java.security.PrivilegedExceptionAction;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
@@ -24,6 +24,8 @@ import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
 import org.apache.solr.client.solrj.impl.LBHttpSolrServer;
 import org.apache.solr.common.util.NamedList;
+
+import infradoop.core.common.account.Account;
 
 public class Cdh5KerberosCloudSolrServer extends CloudSolrServer {
 	private static final HttpRequestInterceptor BUFFERED_INTERCEPTOR = new HttpRequestInterceptor() {

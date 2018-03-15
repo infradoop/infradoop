@@ -1,16 +1,11 @@
 package infradoop.core.common.source;
 
-import infradoop.core.common.account.Account;
-import infradoop.core.common.entity.Nameable;
-import infradoop.core.common.entity.EntityDescriptor;
-import infradoop.core.common.entity.EntityNameable;
-import infradoop.core.common.entity.EntityWriter;
-import infradoop.core.common.entity.EntityWriterOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.NamespaceDescriptor;
@@ -18,6 +13,13 @@ import org.apache.hadoop.hbase.NamespaceNotFoundException;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
+
+import infradoop.core.common.account.Account;
+import infradoop.core.common.entity.EntityDescriptor;
+import infradoop.core.common.entity.EntityNameable;
+import infradoop.core.common.entity.EntityWriter;
+import infradoop.core.common.entity.EntityWriterOptions;
+import infradoop.core.common.entity.Nameable;
 
 public class Cdh5HbaseConnector extends HbaseConnector {
 	public Cdh5HbaseConnector(Account account, Object connection) {
