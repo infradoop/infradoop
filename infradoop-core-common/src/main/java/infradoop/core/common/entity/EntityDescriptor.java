@@ -108,7 +108,13 @@ public class EntityDescriptor extends EntityNameable {
 					throw new IllegalArgumentException(
 							"invalid set attribute \""+name+"\" value "
 									+ "for entity "+getCanonicalName());
-				attribute.setReference(StringEscapeUtils.unescapeJava(tokens.pop()));
+				attribute.setDynamicValue(StringEscapeUtils.unescapeJava(tokens.pop()));
+			} else if ("path".equals(value)) {
+				if (tokens.isEmpty())
+					throw new IllegalArgumentException(
+							"invalid set attribute \""+name+"\" value "
+									+ "for entity "+getCanonicalName());
+				attribute.setPath(StringEscapeUtils.unescapeJava(tokens.pop()));
 			} else if (value.matches("\\d+:\\d+(.\\d+)?")) {
 				String pos[] = value.split("\\:", 2);
 				attribute.setStart(Integer.parseInt(pos[0]));

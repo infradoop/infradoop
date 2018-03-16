@@ -26,7 +26,7 @@ public class StringDataConverter {
 	public static long toEpochTime(Attribute attr, String value) throws ParseException {
 		return (long)(attr.getDateFormat().parse(value).getTime()/1000L);
 	}
-	public static Date toTime(Attribute attr, String value) throws ParseException {
+	public static Date toDate(Attribute attr, String value) throws ParseException {
 		return attr.getDateFormat().parse(value);
 	}
 	public static boolean toBoolean(String value) {
@@ -37,5 +37,30 @@ public class StringDataConverter {
 	}
 	public static String toBinary(byte value[]) {
 		return Hex.encodeHexString(value);
+	}
+	
+	public static Object toObject(Attribute attr, String value) throws ParseException {
+		switch (attr.getType()) {
+		case STRING:
+			return value;
+		case INT:
+			return StringDataConverter.toInt(value);
+		case BIGINT:
+			return StringDataConverter.toLong(value);
+		case FLOAT:
+			return StringDataConverter.toFloat(value);
+		case DOUBLE:
+			return StringDataConverter.toDouble(value);
+		case DATE:
+		case TIMESTAMP:
+			return StringDataConverter.toDate(attr, value);
+		case BOOLEAN:
+			return StringDataConverter.toBoolean(value);
+		case BINARY:
+			return StringDataConverter.toBinary(value);
+		default:
+			throw new IllegalArgumentException("unable to processing value ["+value+"] "
+					+ "["+attr.getEntity().getCanonicalName()+", "+attr.getName()+"]");
+		}
 	}
 }

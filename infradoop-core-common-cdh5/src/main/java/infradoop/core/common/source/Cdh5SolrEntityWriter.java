@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.hadoop.hbase.exceptions.IllegalArgumentIOException;
 import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 
@@ -39,36 +38,7 @@ public class Cdh5SolrEntityWriter extends EntityWriter {
 			currentDoc.setField(attr.getName(), null);
 		else
 			try {
-				switch (attr.getType()) {
-				case STRING:
-					currentDoc.setField(attr.getName(), value);
-					break;
-				case INT:
-					currentDoc.setField(attr.getName(), StringDataConverter.toInt(value));
-					break;
-				case BIGINT:
-					currentDoc.setField(attr.getName(), StringDataConverter.toLong(value));
-					break;
-				case FLOAT:
-					currentDoc.setField(attr.getName(), StringDataConverter.toFloat(value));
-					break;
-				case DOUBLE:
-					currentDoc.setField(attr.getName(), StringDataConverter.toDouble(value));
-					break;
-				case DATE:
-				case TIMESTAMP:
-					currentDoc.setField(attr.getName(), StringDataConverter.toDouble(value));					
-					break;
-				case BOOLEAN:
-					currentDoc.setField(attr.getName(), StringDataConverter.toBoolean(value));					
-					break;
-				case BINARY:
-					currentDoc.setField(attr.getName(), StringDataConverter.toBinary(value));					
-					break;
-				default:
-					throw new IllegalArgumentIOException("unable to processing value ["+value+"] "
-							+ "["+entity.getCanonicalName()+", "+attr.getName()+"]");
-				}
+				currentDoc.setField(attr.getName(), StringDataConverter.toObject(attr, value));
 			} catch (ParseException e) {
 				throw new IOException("unable to processing value ["+value+"] "
 						+ "["+entity.getCanonicalName()+", "+attr.getName()+"]", e);

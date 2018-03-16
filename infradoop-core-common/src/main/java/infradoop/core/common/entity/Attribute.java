@@ -12,7 +12,10 @@ public class Attribute {
 	private int start;
 	private int end;
 	private int decimal;
-	private String reference;
+	private boolean hasPath;
+	private String path;
+	private boolean hasDynamicValue;
+	private String dynamicValue;
 	private boolean required;
 	private boolean hidden;
 	private boolean indexable;
@@ -30,6 +33,8 @@ public class Attribute {
 		required = false;
 		hidden = false;
 		indexable = true;
+		hasPath = false;
+		hasDynamicValue = false;
 		hasStaticValue = false;
 	}
 	
@@ -116,12 +121,27 @@ public class Attribute {
 		this.indexable = indexable;
 		return this;
 	}
-	public String getReference() {
-		return reference;
+	public String getDynamicValue() {
+		return dynamicValue;
 	}
-	public Attribute setReference(String reference) {
-		this.reference = reference;
+	public Attribute setDynamicValue(String reference) {
+		this.dynamicValue = reference;
+		hasDynamicValue = true;
 		return this;
+	}
+	public boolean hasDynamicValue() {
+		return hasDynamicValue;
+	}
+	public String getPath() {
+		return path;
+	}
+	public Attribute setPath(String path) {
+		this.path = path;
+		hasPath = true;
+		return this;
+	}
+	public boolean hasPath() {
+		return hasPath;
 	}
 
 	@Override
