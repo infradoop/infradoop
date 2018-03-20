@@ -3,20 +3,27 @@ package infradoop.core.common.source;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import infradoop.core.common.StringDataConverter;
+import infradoop.core.common.data.StringDataConverter;
 import infradoop.core.common.entity.Attribute;
 import infradoop.core.common.entity.EntityDescriptor;
 import infradoop.core.common.entity.EntityWriter;
 import infradoop.core.common.entity.EntityWriterOptions;
 
 public class Cdh5HbaseEntityWriter extends EntityWriter {
+	private List<Put> puts;
 	private Table table;
 	private Put put;
 	
@@ -30,37 +37,53 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 	@Override
 	public void initialize() throws IOException {
 		Connection hbase = (Connection)connector.unwrap();
-		table = hbase.getTable(TableName.valueOf(entity.getDomain(), entity.getName()));
+		table = hbase.getTable(TableName.valueOf(entityDescriptor.getDomain(), entityDescriptor.getName()));
+		puts = new ArrayList<>(writerOptions.getBatchSize());
 	}
 	
 	@Override
-	public EntityWriter set(int index, String value) throws IOException {
-		Attribute attr = entity.getAttribute(index);
+	public Object getValue(int index) throws IOException {
+		Attribute attr = getAttribute(index);
+		if (index == 0)
+			return getObject(attr, put.getRow());
+		else {
+			List<Cell> cells = put.get(attr.getFamilyAsByteArray(), attr.getNameAsByteArray());
+			if (cells.size() == 0)
+				return null;
+			return getObject(attr, CellUtil.cloneValue(cells.get(cells.size()-1)));
+		}
+	}
+	
+	@Override
+	public void setValue(int index, String value) throws IOException {
+		Attribute attr = getAttribute(index);
 		if (index == 0) {
 			put = new Put(getBytes(attr, value));
 		} else {
 			put.addColumn(attr.getFamilyAsByteArray(), attr.getNameAsByteArray(),
 					getBytes(attr, value));
 		}
-		return this;
 	}
 	
 	@Override
-	public EntityWriter set(int index, Object value) throws IOException {
-		Attribute attr = entity.getAttribute(index);
+	public void setValue(int index, Object value) throws IOException {
+		Attribute attr = getAttribute(index);
 		if (index == 0) {
 			put = new Put(getBytes(attr, value));
 		} else {
 			put.addColumn(attr.getFamilyAsByteArray(), attr.getNameAsByteArray(),
 					getBytes(attr, value));
 		}
-		return this;
 	}
 	
 	@Override
-	public EntityWriter write() throws IOException {
-		table.put(put);
-		return this;
+	public void write() throws IOException {
+		evaluateDynamicValues();
+		if (puts.size() == writerOptions.getBatchSize()) {
+			table.put(puts);
+			puts.clear();
+		}
+		puts.add(put);
 	}
 	
 	protected byte[] getBytes(Attribute attr, String value) throws IOException {
@@ -87,11 +110,11 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 				return Bytes.toBytes(StringDataConverter.toBinary(value));
 			default:
 				throw new IllegalArgumentException("unable to processing value ["+value+"] "
-						+ "["+entity.getCanonicalName()+", "+attr.getName()+"]");
+						+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]");
 			}
 		} catch (ParseException e) {
 			throw new IOException("unable to processing value ["+value+"] "
-					+ "["+entity.getCanonicalName()+", "+attr.getName()+"]", e);
+					+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]", e);
 		}
 	}
 	
@@ -117,15 +140,47 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 				return Bytes.toBytes(StringDataConverter.toBinary((byte[])value));
 			default:
 				throw new IllegalArgumentException("unable to processing value ["+value.toString()+"] "
-						+ "["+entity.getCanonicalName()+", "+attr.getName()+"]");
+						+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]");
 			}
 		} catch (ClassCastException e) {
 			throw new IOException("unable to processing value ["+value.toString()+"] "
-					+ "["+entity.getCanonicalName()+", "+attr.getName()+"]", e);
+					+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]", e);
+		}
+	}
+	
+	protected Object getObject(Attribute attr, byte[] data) throws IOException {
+		if (data == null)
+			return null;
+		if (data.length == 0)
+			return null;
+		switch (attr.getType()) {
+		case INT:
+			return Bytes.toInt(data);
+		case BIGINT:
+			return Bytes.toLong(data);
+		case FLOAT:
+			return Bytes.toFloat(data);
+		case DOUBLE:
+			return Bytes.toDouble(data);
+		case DATE:
+		case TIMESTAMP:
+			return new Date(Bytes.toLong(data));
+		case BINARY:
+			try {
+				return Hex.decodeHex(new String(data).toCharArray());
+			} catch (DecoderException e) {
+				throw new IOException("unable to processing value [BINARY] "
+						+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]", e);
+			}
+		default:
+			throw new IllegalArgumentException("unable to processing value [BINARY] "
+					+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]");
 		}
 	}
 	
 	@Override
 	public void uninitialize() throws IOException {
+		if (!puts.isEmpty())
+			table.put(puts);
 	}
 }
