@@ -2,14 +2,17 @@ package infradoop.core.common.entity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
 public class EntityDescriptor extends EntityNameable {
 	private List<Attribute> attributes;
+	private Map<String, Integer> attributesIndexes;
 	private boolean dynamics;
 	private int shards;
 	private String directory;
@@ -28,7 +31,8 @@ public class EntityDescriptor extends EntityNameable {
 	protected void initialize(String domain, String name) {
 		super.initialize(domain, name);
 		attributes = new ArrayList<>();
-		dynamics = true;
+		attributesIndexes = new HashMap<>();
+		dynamics = false;
 		shards = 1;
 	}
 	
@@ -39,11 +43,17 @@ public class EntityDescriptor extends EntityNameable {
 		return attributes.get(index);
 	}
 	public Attribute getAttribute(String name) {
-		for (Attribute a : attributes) {
-			if (a.getName().equals(name))
-				return a;
-		}
-		return null;
+		int index = indexOfAttribute(name);
+		if (index < 0)
+			return null;
+		return attributes.get(index);
+	}
+	public int indexOfAttribute(String name) {
+		Integer index = attributesIndexes.get(name);
+		if (index == null)
+			return -1;
+		else
+			return index;
 	}
 	public String[] getAttributesNames() {
 		String[] names = new String[attributes.size()];
@@ -97,13 +107,7 @@ public class EntityDescriptor extends EntityNameable {
 		}
 		if (!tokens.isEmpty()) {
 			String value = tokens.pop();
-			if ("=".equals(value) || "static".equals(value)) {
-				if (tokens.isEmpty())
-					throw new IllegalArgumentException(
-							"invalid static attribute \""+name+"\" value "
-									+ "for entity "+getCanonicalName());
-				attribute.setStaticValue(StringEscapeUtils.unescapeJava(tokens.pop()));
-			} else if ("<".equals(value) || "set".equals(value)) {
+			if ("=".equals(value) || "set".equals(value)) {
 				if (tokens.isEmpty())
 					throw new IllegalArgumentException(
 							"invalid set attribute \""+name+"\" value "
@@ -147,7 +151,9 @@ public class EntityDescriptor extends EntityNameable {
 		
 		while (!tokens.isEmpty()) {
 			String value = tokens.pop();
-			if (value.startsWith("required=")) {
+			if (value.equals("required")) {
+				attribute.setRequired(true);
+			} else if (value.startsWith("required=")) {
 				String p[] = value.split("=", 2);
 				attribute.setRequired(Boolean.parseBoolean(p[1]));
 			} else if (value.startsWith("indexable=")) {
@@ -172,16 +178,23 @@ public class EntityDescriptor extends EntityNameable {
 					+" has invalid name for entity "+getCanonicalName());
 		Attribute attribute = new Attribute(this, name, type);
 		attributes.add(attribute);
+		rebuildAttributeIndexes();
 		return attribute;
 	}
 	public boolean removeAttribute(String name) {
 		Attribute a;
 		if ((a = getAttribute(name)) != null) {
 			attributes.remove(a);
+			rebuildAttributeIndexes();
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	private void rebuildAttributeIndexes() {
+		for (int i=0;i<attributes.size();i++)
+			attributesIndexes.put(attributes.get(i).getName(), i);
 	}
 	
 	public String getDirectory() {
@@ -198,7 +211,7 @@ public class EntityDescriptor extends EntityNameable {
 		this.shards = shares;
 		return this;
 	}
-	public boolean isDynamics() {
+	public boolean useDynamics() {
 		return dynamics;
 	}
 	public EntityDescriptor setDynamics(boolean useDynamics) {

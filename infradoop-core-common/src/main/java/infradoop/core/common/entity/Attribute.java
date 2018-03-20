@@ -7,6 +7,8 @@ public class Attribute {
 	private final String name;
 	private final byte[] nameAsByteArray;
 	private final DataType type;
+	private boolean hasFinalName;
+	private String finalName;
 	private String family;
 	private byte[] familyAsByteArray;
 	private int start;
@@ -20,8 +22,6 @@ public class Attribute {
 	private boolean hidden;
 	private boolean indexable;
 	private SimpleDateFormat dateFormat;
-	private boolean hasStaticValue;
-	private String staticValue;
 	
 	Attribute(EntityDescriptor entity, String name, DataType type) {
 		this.entity = entity;
@@ -35,7 +35,7 @@ public class Attribute {
 		indexable = true;
 		hasPath = false;
 		hasDynamicValue = false;
-		hasStaticValue = false;
+		hasFinalName = false;
 	}
 	
 	public EntityDescriptor getEntity() {
@@ -81,17 +81,6 @@ public class Attribute {
 	public Attribute setDateFormat(SimpleDateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 		return this;
-	}
-	public String getStaticValue() {
-		return staticValue;
-	}
-	public Attribute setStaticValue(String staticValue) {
-		this.staticValue = staticValue;
-		hasStaticValue = true;
-		return this;
-	}
-	public boolean hasStaticValue() {
-		return hasStaticValue;
 	}
 	public int getStart() {
 		return start;
@@ -143,6 +132,16 @@ public class Attribute {
 	public boolean hasPath() {
 		return hasPath;
 	}
+	public String getFinalName() {
+		return finalName;
+	}
+	public void setFinalName(String finalName) {
+		this.finalName = finalName;
+		hasFinalName = true;
+	}
+	public boolean hasFinalName() {
+		return hasFinalName;
+	}
 
 	@Override
 	public String toString() {
@@ -153,7 +152,7 @@ public class Attribute {
 		if (getStart() > 0)
 			sb.append(" ").append(getStart()).append(getEnd());
 		if (isRequired())
-			sb.append(" requiered=").append(isRequired());
+			sb.append(" requiered");
 		if (!isIndexable())
 			sb.append(" indexable=").append(isIndexable());
 		return sb.toString();
