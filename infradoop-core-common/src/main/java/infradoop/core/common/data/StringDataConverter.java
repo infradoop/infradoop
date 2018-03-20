@@ -1,7 +1,8 @@
-package infradoop.core.common;
+package infradoop.core.common.data;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.codec.binary.Hex;
@@ -10,6 +11,7 @@ import infradoop.core.common.entity.Attribute;
 
 public class StringDataConverter {
 	private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public static int toInt(String value) throws ParseException {
 		return NUMBER_FORMAT.parse(value).intValue();
@@ -37,6 +39,16 @@ public class StringDataConverter {
 	}
 	public static String toBinary(byte value[]) {
 		return Hex.encodeHexString(value);
+	}
+	
+	public static String toString(Object value) {
+		if (value == null)
+			return null;
+		if (value instanceof Date) {
+			return DATE_FORMAT.format((Date)value);
+		} else {
+			return value.toString();
+		}
 	}
 	
 	public static Object toObject(Attribute attr, String value) throws ParseException {
