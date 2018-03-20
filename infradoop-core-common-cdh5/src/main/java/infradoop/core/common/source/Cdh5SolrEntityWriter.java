@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 
-import infradoop.core.common.StringDataConverter;
+import infradoop.core.common.data.StringDataConverter;
 import infradoop.core.common.entity.Attribute;
 import infradoop.core.common.entity.EntityDescriptor;
 import infradoop.core.common.entity.EntityWriter;
@@ -25,38 +25,84 @@ public class Cdh5SolrEntityWriter extends EntityWriter {
 
 	@Override
 	public void initialize() throws IOException {
-		docs = new ArrayList<>(options.getBatchSize());
+		docs = new ArrayList<>(writerOptions.getBatchSize());
 		currentDoc = new SolrInputDocument();
 		((CloudSolrServer)connector.unwrap())
-			.setDefaultCollection(entity.getCanonicalName());
+			.setDefaultCollection(entityDescriptor.getCanonicalName());
+		
+		for (int i = 0; i < entityDescriptor.countAttributes(); i++) {
+			Attribute attr = getAttribute(i);
+			String fieldName;
+			if (entityDescriptor.useDynamics()) {
+				if (i == 0) {
+					fieldName = "id";
+				} else {
+					switch (attr.getType()) {
+					case STRING:
+					case BINARY:
+						fieldName = attr.getName() + "_s";
+						break;
+					case INT:
+						fieldName = attr.getName() + "_i";
+						break;
+					case BIGINT:
+						fieldName = attr.getName() + "_l";
+						break;
+					case FLOAT:
+						fieldName = attr.getName() + "_f";
+						break;
+					case DOUBLE:
+						fieldName = attr.getName() + "_d";
+						break;
+					case BOOLEAN:
+						fieldName = attr.getName() + "_b";
+						break;
+					case DATE:
+					case TIMESTAMP:
+						fieldName = attr.getName() + "_dt";
+						break;
+					default:
+						throw new IOException(
+								"data type unsupported " + attr.getType().name() + " [" + attr.toString() + "]");
+					}
+				}
+			} else {
+				fieldName = attr.getName();
+			}
+			attr.setFinalName(fieldName);
+		}
 	}
 	
 	@Override
-	public EntityWriter set(int index, String value) throws IOException {
-		Attribute attr = entity.getAttribute(index);
+	public Object getValue(int index) throws IOException {
+		Attribute attr = getAttribute(index);
+		return currentDoc.getFieldValue(attr.getFinalName());
+	}
+	@Override
+	public void setValue(int index, String value) throws IOException {
+		Attribute attr = getAttribute(index);
 		if (value == null)
-			currentDoc.setField(attr.getName(), null);
+			currentDoc.setField(attr.getFinalName(), null);
 		else
 			try {
-				currentDoc.setField(attr.getName(), StringDataConverter.toObject(attr, value));
+				currentDoc.setField(attr.getFinalName(), StringDataConverter.toObject(attr, value));
 			} catch (ParseException e) {
 				throw new IOException("unable to processing value ["+value+"] "
-						+ "["+entity.getCanonicalName()+", "+attr.getName()+"]", e);
+						+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]", e);
 			}
-		return this;
 	}
 	@Override
-	public EntityWriter set(int index, Object value) throws IOException {
-		currentDoc.addField(entity.getAttribute(index).getName(), value);
-		return this;
+	public void setValue(int index, Object value) throws IOException {
+		Attribute attr = getAttribute(index);
+		currentDoc.addField(attr.getFinalName(), value);
 	}
 	@Override
-	public EntityWriter write() throws IOException {
-		if (docs.size() == options.getBatchSize())
+	public void write() throws IOException {
+		evaluateDynamicValues();
+		if (docs.size() == writerOptions.getBatchSize())
 			addToSolr();
 		docs.add(currentDoc);
 		currentDoc = new SolrInputDocument();
-		return this;
 	}
 	
 	private void addToSolr() throws IOException {
