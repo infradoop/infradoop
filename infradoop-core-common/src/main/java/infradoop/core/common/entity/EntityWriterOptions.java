@@ -1,10 +1,10 @@
 package infradoop.core.common.entity;
 
-import java.util.Map;
+import infradoop.core.common.data.DefinedVariables;
 
 public class EntityWriterOptions {
 	private int batchSize;
-	private Map<String, String> variables;
+	private DefinedVariables variables;
 	
 	public EntityWriterOptions() {
 		this.batchSize = 5000;
@@ -18,10 +18,10 @@ public class EntityWriterOptions {
 		return batchSize;
 	}
 	
-	public Map<String, String> getVariables() {
+	public DefinedVariables getVariables() {
 		return variables;
 	}
-	public EntityWriterOptions setVariables(Map<String, String> dynamicValues) {
+	public EntityWriterOptions setVariables(DefinedVariables dynamicValues) {
 		this.variables = dynamicValues;
 		return this;
 	}

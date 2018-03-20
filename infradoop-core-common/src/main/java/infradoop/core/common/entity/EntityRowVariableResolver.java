@@ -1,24 +1,24 @@
 package infradoop.core.common.entity;
 
 import java.io.IOException;
-import java.util.Map;
 
+import infradoop.core.common.data.DefinedVariables;
 import infradoop.core.common.data.StringDataConverter;
 import infradoop.core.common.data.VariableResolver;
 
 public class EntityRowVariableResolver implements VariableResolver {
-	private final Map<String, String> map;
+	private final DefinedVariables definedVariables;
 	private EntityRow entityRow;
 	
-	public EntityRowVariableResolver(Map<String, String> map) {
-		this.map = map;
+	public EntityRowVariableResolver(DefinedVariables definedVariables) {
+		this.definedVariables = definedVariables;
 	}
 	
 	@Override
 	public String resolve(String variable, String[] params) {
 		int attrIndex;
-		if (map != null && map.containsKey(variable)) {
-			String v = map.get(variable);
+		if (definedVariables != null && definedVariables.containsKey(variable)) {
+			String v = definedVariables.get(variable);
 			if (v == null)
 				return "";
 			else
