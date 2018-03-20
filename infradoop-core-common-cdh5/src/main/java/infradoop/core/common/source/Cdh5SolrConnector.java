@@ -200,7 +200,7 @@ public class Cdh5SolrConnector extends SolrConnector {
 				sb.append("<schema name=\"").append(entity.getCanonicalName()).append("\" version=\"1.5\">\n");
 				sb.append("   <fields>\n");
 				String idName;
-				if (entity.isDynamics()) {
+				if (entity.useDynamics()) {
 					idName = "id";
 					Attribute idAttr = entity.getAttribute(0);
 					String idType = getTypeName(idAttr);
@@ -321,7 +321,7 @@ public class Cdh5SolrConnector extends SolrConnector {
 			query = new SolrQuery();
 			query.add(CommonParams.QT, "/schema/dynamicfields");
 			response = solr.query(query);
-			fields = (List<SimpleOrderedMap<?>>)response.getResponse().get("dynamicfields");
+			fields = (List<SimpleOrderedMap<?>>)response.getResponse().get("dynamicFields");
 			if (fields != null && fields.size() > 0)
 				entity.setDynamics(true);
 			// retornar entidad
@@ -340,7 +340,7 @@ public class Cdh5SolrConnector extends SolrConnector {
 			unloadReq.setDeleteDataDir(true);
 			
 			ZkStateReader zkReader = solr.getZkStateReader();
-			DocCollection coll = zkReader.getClusterState().getCollection("default.test_solr");
+			DocCollection coll = zkReader.getClusterState().getCollection(nameable.getCanonicalName());
 			for (Slice s : coll.getSlices()) {
 				for (Replica r : s.getReplicas()) {
 					unloadReq.setCoreName(r.getProperties().get("core").toString());
