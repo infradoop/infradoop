@@ -33,9 +33,9 @@ public class EntityDescriptorTest {
 		Assert.assertTrue(entityDesc.getAttribute("event_oth").getEnd() == 15);
 		Assert.assertTrue(entityDesc.getAttribute("event_oth").isRequired());
 		
-		entityDesc.compileAttribute("category string static \"default\"");
+		entityDesc.compileAttribute("category string set \"default\"");
 		Assert.assertEquals(entityDesc.getAttribute("category").getType(), DataType.STRING);
-		Assert.assertEquals((Object)entityDesc.getAttribute("category").getStaticValue(), (Object)"default");
+		Assert.assertEquals((Object)entityDesc.getAttribute("category").getDynamicValue(), (Object)"default");
 		Assert.assertFalse(entityDesc.getAttribute("category").isRequired());
 		
 		entityDesc.compileAttribute("desc string required=false indexable=false");
