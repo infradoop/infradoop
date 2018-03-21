@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.codec.DecoderException;
@@ -26,12 +27,13 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 	private List<Put> puts;
 	private Table table;
 	private Put put;
+	private boolean hasvalue[];
 	
-	public Cdh5HbaseEntityWriter(Connector connector, EntityDescriptor entity, EntityWriterOptions options) {
-		super(connector, entity, options);
-		if (entity.getDomain() == null)
+	public Cdh5HbaseEntityWriter(Connector connector, EntityDescriptor entityDescriptor, EntityWriterOptions options) {
+		super(connector, entityDescriptor, options);
+		if (entityDescriptor.getDomain() == null)
 			throw new IllegalArgumentException("The entity domain can't not be null "
-					+ "["+entity.getCanonicalName()+", "+connector.getConnectorType()+", "+connector.getAccount().getName()+"]");
+					+ "["+entityDescriptor.getCanonicalName()+", "+connector.getConnectorType()+", "+connector.getAccount().getName()+"]");
 	}
 
 	@Override
@@ -39,8 +41,13 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 		Connection hbase = (Connection)connector.unwrap();
 		table = hbase.getTable(TableName.valueOf(entityDescriptor.getDomain(), entityDescriptor.getName()));
 		puts = new ArrayList<>(writerOptions.getBatchSize());
+		hasvalue = new boolean[entityDescriptor.countAttributes()];
 	}
 	
+	@Override
+	public boolean hasValue(int index) throws IOException {
+		return hasvalue[index];
+	}
 	@Override
 	public Object getValue(int index) throws IOException {
 		Attribute attr = getAttribute(index);
@@ -63,6 +70,7 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 			put.addColumn(attr.getFamilyAsByteArray(), attr.getNameAsByteArray(),
 					getBytes(attr, value));
 		}
+		hasvalue[index] = true;
 	}
 	
 	@Override
@@ -74,6 +82,7 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 			put.addColumn(attr.getFamilyAsByteArray(), attr.getNameAsByteArray(),
 					getBytes(attr, value));
 		}
+		hasvalue[index] = true;
 	}
 	
 	@Override
@@ -84,6 +93,7 @@ public class Cdh5HbaseEntityWriter extends EntityWriter {
 			puts.clear();
 		}
 		puts.add(put);
+		Arrays.fill(hasvalue, false);
 	}
 	
 	protected byte[] getBytes(Attribute attr, String value) throws IOException {

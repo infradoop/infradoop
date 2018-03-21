@@ -3,6 +3,7 @@ package infradoop.core.common.source;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.solr.client.solrj.impl.CloudSolrServer;
@@ -17,14 +18,16 @@ import infradoop.core.common.entity.EntityWriterOptions;
 public class Cdh5SolrEntityWriter extends EntityWriter {
 	private List<SolrInputDocument> docs;
 	private SolrInputDocument currentDoc;
+	private boolean hasvalue[];
 	
-	public Cdh5SolrEntityWriter(Connector connector, EntityDescriptor entity,
+	public Cdh5SolrEntityWriter(Connector connector, EntityDescriptor entityDescriptor,
 			EntityWriterOptions options) {
-		super(connector, entity, options);
+		super(connector, entityDescriptor, options);
 	}
 
 	@Override
 	public void initialize() throws IOException {
+		hasvalue = new boolean[entityDescriptor.countAttributes()];
 		docs = new ArrayList<>(writerOptions.getBatchSize());
 		currentDoc = new SolrInputDocument();
 		((CloudSolrServer)connector.unwrap())
@@ -33,7 +36,7 @@ public class Cdh5SolrEntityWriter extends EntityWriter {
 		for (int i = 0; i < entityDescriptor.countAttributes(); i++) {
 			Attribute attr = getAttribute(i);
 			String fieldName;
-			if (entityDescriptor.useDynamics()) {
+			if (entityDescriptor.useDynamicFields()) {
 				if (i == 0) {
 					fieldName = "id";
 				} else {
@@ -74,6 +77,10 @@ public class Cdh5SolrEntityWriter extends EntityWriter {
 	}
 	
 	@Override
+	public boolean hasValue(int index) throws IOException {
+		return hasvalue[index];
+	}
+	@Override
 	public Object getValue(int index) throws IOException {
 		Attribute attr = getAttribute(index);
 		return currentDoc.getFieldValue(attr.getFinalName());
@@ -90,12 +97,15 @@ public class Cdh5SolrEntityWriter extends EntityWriter {
 				throw new IOException("unable to processing value ["+value+"] "
 						+ "["+entityDescriptor.getCanonicalName()+", "+attr.getName()+"]", e);
 			}
+		hasvalue[index] = true;
 	}
 	@Override
 	public void setValue(int index, Object value) throws IOException {
 		Attribute attr = getAttribute(index);
 		currentDoc.addField(attr.getFinalName(), value);
+		hasvalue[index] = true;
 	}
+	
 	@Override
 	public void write() throws IOException {
 		evaluateDynamicValues();
@@ -103,6 +113,7 @@ public class Cdh5SolrEntityWriter extends EntityWriter {
 			addToSolr();
 		docs.add(currentDoc);
 		currentDoc = new SolrInputDocument();
+		Arrays.fill(hasvalue, false);
 	}
 	
 	private void addToSolr() throws IOException {
