@@ -119,6 +119,8 @@ public class AccountManager {
 			throw new IOException("account is already registered ["+name+"]");
 		DefaultAccount account;
 		if (SystemConfiguration.isSecurityEnabled()) {
+			if (!principal.contains("@"))
+				principal += "@"+SystemConfiguration.getSystemRealm();
 			KerberosAuthenticator kauth = new KerberosAuthenticator(principal, password, keytab);
 			account = new DefaultAccount(principal, new Properties(), kauth,
 				null, configuration);
