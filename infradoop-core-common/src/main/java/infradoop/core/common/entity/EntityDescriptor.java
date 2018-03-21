@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 public class EntityDescriptor extends EntityNameable {
 	private List<Attribute> attributes;
 	private Map<String, Integer> attributesIndexes;
-	private boolean dynamics;
+	private boolean dynamicFields;
 	private int shards;
 	private String directory;
 
@@ -32,7 +32,7 @@ public class EntityDescriptor extends EntityNameable {
 		super.initialize(domain, name);
 		attributes = new ArrayList<>();
 		attributesIndexes = new HashMap<>();
-		dynamics = false;
+		dynamicFields = false;
 		shards = 1;
 	}
 	
@@ -211,11 +211,11 @@ public class EntityDescriptor extends EntityNameable {
 		this.shards = shares;
 		return this;
 	}
-	public boolean useDynamics() {
-		return dynamics;
+	public boolean useDynamicFields() {
+		return dynamicFields;
 	}
-	public EntityDescriptor setDynamics(boolean useDynamics) {
-		this.dynamics = useDynamics;
+	public EntityDescriptor setDynamicFields(boolean useDynamics) {
+		this.dynamicFields = useDynamics;
 		return this;
 	}
 }
