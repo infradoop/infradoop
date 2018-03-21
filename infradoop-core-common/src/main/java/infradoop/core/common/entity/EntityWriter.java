@@ -52,7 +52,8 @@ public abstract class EntityWriter implements EntityRow, AutoCloseable {
 		if (!dynamicAttributes.isEmpty()) {
 			variableResolver.setCurrent(this);
 			for (int index : dynamicAttributes)
-				setValue(index, VariableParser.parse(getAttribute(index).getDynamicValue(), variableResolver));
+				if (!hasValue(index))
+					setValue(index, VariableParser.parse(getAttribute(index).getDynamicValue(), variableResolver));
 		}
 	}
 	
