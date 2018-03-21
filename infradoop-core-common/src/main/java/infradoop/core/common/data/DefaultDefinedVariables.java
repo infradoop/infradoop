@@ -33,11 +33,11 @@ public class DefaultDefinedVariables implements DefinedVariables {
 	public DefaultDefinedVariables(Map<String, String> map) {
 		this.map = map;
 		
-		this.map.put("currentHostname", DEFAULT_HOSTNAME);
-		this.map.put("currentUser", DEFAULT_USERNAME);
-		this.map.put("currentUserHome", DEFAULT_USERHOME);
-		this.map.put("currentEpoch", Long.toString(System.currentTimeMillis()));
-		this.map.put("currentDate", DEFAULT_FORMAT.format(new Date()));
+		this.map.put("current_hostname", DEFAULT_HOSTNAME);
+		this.map.put("current_user_name", DEFAULT_USERNAME);
+		this.map.put("current_user_home", DEFAULT_USERHOME);
+		
+		resetChangingVariables();
 	}
 	@Override
 	public String get(String key) {
@@ -53,4 +53,8 @@ public class DefaultDefinedVariables implements DefinedVariables {
 		return map.containsKey(key);
 	}
 
+	public void resetChangingVariables() {
+		this.map.put("current_epochtime", Long.toString(System.currentTimeMillis()));
+		this.map.put("current_date", DEFAULT_FORMAT.format(new Date()));
+	}
 }
