@@ -200,7 +200,7 @@ public class Cdh5SolrConnector extends SolrConnector {
 				sb.append("<schema name=\"").append(entity.getCanonicalName()).append("\" version=\"1.5\">\n");
 				sb.append("   <fields>\n");
 				String idName;
-				if (entity.useDynamics()) {
+				if (entity.useDynamicFields()) {
 					idName = "id";
 					Attribute idAttr = entity.getAttribute(0);
 					String idType = getTypeName(idAttr);
@@ -323,7 +323,7 @@ public class Cdh5SolrConnector extends SolrConnector {
 			response = solr.query(query);
 			fields = (List<SimpleOrderedMap<?>>)response.getResponse().get("dynamicFields");
 			if (fields != null && fields.size() > 0)
-				entity.setDynamics(true);
+				entity.setDynamicFields(true);
 			// retornar entidad
 			return entity;
 		} catch (SolrServerException e) {

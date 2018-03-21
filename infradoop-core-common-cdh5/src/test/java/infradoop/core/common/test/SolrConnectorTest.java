@@ -31,14 +31,14 @@ public class SolrConnectorTest {
 				.compileAttribute("id string set \"${name}_${order}\" required")
 				.compileAttribute("name string required")
 				.compileAttribute("order int required");
-		entityDynamicDescriptor.setDynamics(true);
+		entityDynamicDescriptor.setDynamicFields(true);
 		entityDynamicDescriptor.setShards(2);
 		
 		entityDescriptor = new EntityDescriptor("default", "test")
 				.compileAttribute("id string set \"${name}_${order}\" required")
 				.compileAttribute("name string required")
 				.compileAttribute("order int required");
-		entityDescriptor.setDynamics(false);
+		entityDescriptor.setDynamicFields(false);
 		entityDescriptor.setShards(2);
 	}
 	
@@ -87,7 +87,7 @@ public class SolrConnectorTest {
 		try (SolrConnector solr = ConnectorManager.get(
 				AccountManager.get(Account.DEFAULT), SolrConnector.class)) {
 			EntityDescriptor edd = solr.buildEntityDescriptor(entityDynamicDescriptor);
-			Assert.assertTrue(edd.useDynamics());
+			Assert.assertTrue(edd.useDynamicFields());
 			int fields = 0;
 			for (String an : edd.getAttributesNames()) {
 				System.out.println(edd.getAttribute(an).toString());
@@ -130,7 +130,7 @@ public class SolrConnectorTest {
 		try (SolrConnector solr = ConnectorManager.get(
 				AccountManager.get(Account.DEFAULT), SolrConnector.class)) {
 			EntityDescriptor edd = solr.buildEntityDescriptor(entityDescriptor);
-			Assert.assertFalse(edd.useDynamics());
+			Assert.assertFalse(edd.useDynamicFields());
 			int fields = 0;
 			for (String an : edd.getAttributesNames()) {
 				System.out.println(edd.getAttribute(an).toString());
