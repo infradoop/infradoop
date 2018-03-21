@@ -232,7 +232,9 @@ public class Cdh5SolrConnector extends SolrConnector {
 					sb.append("      <field name=\"_version_\" type=\"long\" indexed=\"true\" stored=\"true\" />\n");
 					for (int i=1;i<entity.countAttributes();i++) {
 						Attribute attr = entity.getAttribute(i);
-						sb.append("      <field name=\"").append(attr.getName()).append("\" type=\"").append(getTypeName(attr)).append("\" indexed=\"").append(Boolean.toString(attr.isIndexable())).append("\" required=\"").append(Boolean.toString(attr.isRequired())).append("\" stored=\"true\"/>");
+						sb.append("      <field name=\"").append(attr.getName()).append("\" type=\"").append(getTypeName(attr))
+							.append("\" indexed=\"").append(Boolean.toString(attr.isIndexable())).append("\" required=\"")
+							.append(Boolean.toString(attr.isRequired())).append("\" stored=\"true\"/>\n");
 					}
 				}
 				sb.append("   </fields>\n");
