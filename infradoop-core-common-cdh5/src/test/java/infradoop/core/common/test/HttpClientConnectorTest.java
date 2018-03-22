@@ -20,13 +20,13 @@ import infradoop.core.common.source.HttpClientConnector;
 public class HttpClientConnectorTest {
 	@Test
 	public void test_01_kerberos() throws IOException {
-		Assume.assumeNotNull(System.getProperty("account.1.principal"));
-		Assume.assumeNotNull(System.getProperty("account.1.password"));
+		Assume.assumeNotNull(System.getProperty("account.user.principal"));
+		Assume.assumeNotNull(System.getProperty("account.user.password"));
 		Assume.assumeNotNull(System.getProperty("restful.url"));
 		
-		Account account = AccountManager.register("account.1",
-				System.getProperty("account.1.principal"),
-				System.getProperty("account.1.password"));
+		Account account = AccountManager.register("account.user",
+				System.getProperty("account.user.principal"),
+				System.getProperty("account.user.password"));
 		
 		try (HttpClientConnector http = ConnectorManager.get(account, HttpClientConnector.class)) {
 			HttpGet request = new HttpGet(System.getProperty("restful.url"));
@@ -45,7 +45,7 @@ public class HttpClientConnectorTest {
 	public void test_02_simple() throws IOException {
 		Assume.assumeNotNull(System.getProperty("restful.url"));
 		
-		Account account = AccountManager.register("account.2");
+		Account account = AccountManager.register(Account.INHERIT);
 		
 		try (HttpClientConnector http = ConnectorManager.get(account, HttpClientConnector.class)) {
 			HttpGet request = new HttpGet(System.getProperty("restful.url"));
