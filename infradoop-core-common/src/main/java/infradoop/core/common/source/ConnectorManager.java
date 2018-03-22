@@ -52,7 +52,7 @@ public class ConnectorManager {
 		}
 	}
 	
-	private static GenericKeyedObjectPool<String, Connector> getPool() {
+	private static synchronized GenericKeyedObjectPool<String, Connector> getPool() {
 		if (pool == null) {
 			PoolKeyFactory factory;
 			pool = new GenericKeyedObjectPool<>(factory = new PoolKeyFactory());
@@ -74,7 +74,7 @@ public class ConnectorManager {
 	private static PoolKey getPoolKey(String key) {
 		return getPoolKeys().get(key);
 	}
-	private static Map<String, PoolKey> getPoolKeys() {
+	private static synchronized Map<String, PoolKey> getPoolKeys() {
 		if (poolKeys == null)
 			poolKeys = new HashMap<>();
 		return poolKeys;
@@ -87,7 +87,7 @@ public class ConnectorManager {
 		}
 		throw new IllegalArgumentException("unable to find connector factory ["+classType+"]");
 	}
-	private static List<ConnectorFactory> getFactories() {
+	private static synchronized List<ConnectorFactory> getFactories() {
 		if (factories == null) {
 			factories = new ArrayList<>();
 			for (ConnectorFactory cf : ServiceLoader.load(ConnectorFactory.class)) {

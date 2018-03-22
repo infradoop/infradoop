@@ -19,14 +19,14 @@ public class AccountManager {
 	public static final Logger LOG = Logger.getLogger(AccountManager.class);
 	private static final Map<String, Account> ACCOUNTS = new HashMap<>();
 	
-	public static void unregisterAll() {
+	public synchronized static void unregisterAll() {
 		List<String> names = new ArrayList<>();
 		names.addAll(ACCOUNTS.keySet());
 		for (String name : names)
 			unregister(name);
 	}
 	
-	public static boolean unregister(Account account) {
+	public synchronized static boolean unregister(Account account) {
 		if (account == null)
 			throw new IllegalArgumentException("account parameter can't be null");
 		String name = null;
@@ -49,7 +49,7 @@ public class AccountManager {
 			return false;
 		}
 	}
-	public static boolean unregister(String name) {
+	public synchronized static boolean unregister(String name) {
 		if (name == null || "".equals(name))
 			throw new IllegalArgumentException("account parameter can't be empty");
 		if (!ACCOUNTS.containsKey(name))
@@ -65,7 +65,7 @@ public class AccountManager {
 		}
 	}
 	
-	public static Account register(String name, Properties properties) throws IOException {
+	public synchronized static Account register(String name, Properties properties) throws IOException {
 		if (name == null || "".equals(name))
 			throw new IllegalArgumentException("account parameter can't be empty");
 		if (ACCOUNTS.containsKey(name))
@@ -80,7 +80,7 @@ public class AccountManager {
 	public static Account register(String name) throws IOException {
 		return register(name, SystemConfiguration.getConfiguration());
 	}
-	public static Account register(String name, Configuration configuration) throws IOException {
+	public synchronized static Account register(String name, Configuration configuration) throws IOException {
 		if (name == null || "".equals(name))
 			throw new IllegalArgumentException("account parameter can't be empty");
 		if (ACCOUNTS.containsKey(name))
@@ -112,7 +112,7 @@ public class AccountManager {
 	public static Account register(String name, String principal, String password, Configuration configuration) throws IOException {
 		return register(name, principal, password, null, configuration);
 	}
-	public static Account register(String name, String principal, String password, File keytab, Configuration configuration) throws IOException {
+	public synchronized static Account register(String name, String principal, String password, File keytab, Configuration configuration) throws IOException {
 		if (name == null || "".equals(name))
 			throw new IllegalArgumentException("account parameter can't be empty");
 		if (ACCOUNTS.containsKey(name))
@@ -134,7 +134,7 @@ public class AccountManager {
 		return account;
 	}
 	
-	public static Account get(String name) {
+	public synchronized static Account get(String name) {
 		return ACCOUNTS.get(name);
 	}
 }
