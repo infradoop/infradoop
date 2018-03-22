@@ -108,7 +108,15 @@ public class SolrConnectorTest {
 	}
 	
 	@Test
-	public void test_06_fill_entity() throws IOException {
+	public void test_06_check_entity_exists() throws IOException {
+		try (SolrConnector solr = ConnectorManager.get(
+				AccountManager.get(Account.DEFAULT), SolrConnector.class)) {
+			Assert.assertTrue(solr.entityExists(entityDescriptor));
+		}
+	}
+	
+	@Test
+	public void test_07_fill_entity() throws IOException {
 		try (SolrConnector solr = ConnectorManager.get(
 				AccountManager.get(Account.DEFAULT), SolrConnector.class)) {
 			try (EntityWriter writer = solr.getEntityWriter(entityDescriptor)) {
@@ -126,7 +134,7 @@ public class SolrConnectorTest {
 	}
 	
 	@Test
-	public void test_07_build_entity_descriptor() throws IOException {
+	public void test_08_build_entity_descriptor() throws IOException {
 		try (SolrConnector solr = ConnectorManager.get(
 				AccountManager.get(Account.DEFAULT), SolrConnector.class)) {
 			EntityDescriptor edd = solr.buildEntityDescriptor(entityDescriptor);
