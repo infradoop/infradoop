@@ -12,12 +12,14 @@ import infradoop.core.common.StringCryptor;
 public class StringCryptorTest {
 	@Test
 	public void test_01_encrypt() {
-		String enc = StringCryptor.encrypt("Jared González");
-		Assert.assertEquals(StringCryptor.decrypt(enc), "Jared González");
+		Assume.assumeNotNull(System.getProperty("string"));
+		String enc = StringCryptor.encrypt(System.getProperty("string"));
+		Assert.assertEquals(StringCryptor.decrypt(enc), System.getProperty("string"));
+		System.out.println(enc);
 	}
 	
 	@Test
-	public void test_01_decript() {
+	public void test_02_decript() {
 		Assume.assumeNotNull(System.getProperty("stringEncrypted"));
 		System.out.println(StringCryptor.decrypt(System.getProperty("stringEncrypted")));
 	}
