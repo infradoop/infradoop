@@ -19,6 +19,22 @@ public class HiveSecureProviderTest {
 	
 	@Test
 	public void test_01_hive_get_roles() throws IOException, SQLException {
+		Account account = AccountManager.register(Account.INHERIT);
+		try (HiveConnector hive = ConnectorManager.get(account, HiveConnector.class)) {
+			for (String database : hive.getDomains()) {
+				for (String table : hive.getEntities(database)) {
+					LOG.info(database+"."+table);
+					for (Grant grant : hive.retriveEntityGrants(database, table)) {
+						LOG.info("  "+grant.getGrantee()+", "+grant.getGranteeType().name()
+								+", ["+StringUtils.join(grant.getPermissions(), ":")+"]");
+					}
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void test_02_hive_get_roles() throws IOException, SQLException {
 		Assume.assumeNotNull(System.getProperty("account.admin.principal"));
 		Assume.assumeNotNull(System.getProperty("account.admin.password"));
 		
